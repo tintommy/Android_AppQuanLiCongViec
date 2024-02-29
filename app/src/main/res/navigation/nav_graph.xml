@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/congViecFragment">
+
+    <fragment
+        android:id="@+id/chiTieuFragment"
+        android:name="com.example.appquanlycongviec.fragment.ChiTieuFragment"
+        android:label="fragment_chi_tieu"
+        tools:layout="@layout/fragment_chi_tieu" />
+    <fragment
+        android:id="@+id/congViecFragment"
+        android:name="com.example.appquanlycongviec.fragment.CongViecFragment"
+        android:label="fragment_cong_viec"
+        tools:layout="@layout/fragment_cong_viec" />
+    <fragment
+        android:id="@+id/ghiChuFragment"
+        android:name="com.example.appquanlycongviec.fragment.GhiChuFragment"
+        android:label="fragment_ghi_chu"
+        tools:layout="@layout/fragment_ghi_chu" />
+    <fragment
+        android:id="@+id/suKienFragment"
+        android:name="com.example.appquanlycongviec.fragment.SuKienFragment"
+        android:label="fragment_su_kien"
+        tools:layout="@layout/fragment_su_kien" />
+    <fragment
+        android:id="@+id/taiKhoanFragment"
+        android:name="com.example.appquanlycongviec.fragment.TaiKhoanFragment"
+        android:label="fragment_tai_khoan"
+        tools:layout="@layout/fragment_tai_khoan" />
+    <fragment
+        android:id="@+id/thongKeFragment"
+        android:name="com.example.appquanlycongviec.fragment.ThongKeFragment"
+        android:label="fragment_thong_ke"
+        tools:layout="@layout/fragment_thong_ke" />
+</navigation>
