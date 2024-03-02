@@ -67,6 +67,7 @@ public class CongViecFragment extends Fragment {
     }
 
     private String dinhDangNgay(int ngay, int thang, int nam) {
+
         String temp = "";
         if (ngay < 10)
             temp += "0" + String.valueOf(ngay);
