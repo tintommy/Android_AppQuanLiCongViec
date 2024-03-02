@@ -29,7 +29,7 @@ public abstract class Resource<T> {
 
     public static class Unspecified<T> extends Resource<T> {
         public Unspecified(T data) {
-            super(data, null);
+            super(null, null);
         }
     }
 }
