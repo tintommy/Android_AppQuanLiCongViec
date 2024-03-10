@@ -1,10 +1,10 @@
 package com.example.appquanlycongviec.util;
 
-public abstract class Resource<T> {
+public class Resource<T> {
     private final T data;
     private final String message;
 
-    private Resource(T data, String message) {
+    public Resource(T data, String message) {
         this.data = data;
         this.message = message;
     }
@@ -16,20 +16,28 @@ public abstract class Resource<T> {
     }
 
     public static class Loading<T> extends Resource<T> {
-        public Loading(T data) {
-            super(data, null);
+        public Loading() {
+            super(null, null);
         }
     }
 
     public static class Error<T> extends Resource<T> {
-        public Error(String message, T data) {
-            super(data, message);
+        public Error(String message) {
+            super(null, message);
         }
     }
 
     public static class Unspecified<T> extends Resource<T> {
-        public Unspecified(T data) {
+        public Unspecified() {
             super(null, null);
         }
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }
