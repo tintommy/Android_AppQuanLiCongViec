@@ -7,9 +7,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class apiInstance {
+public class ApiInstance {
 
-        private static final String BASE_URL = "https://localhost..../";
+        private static final String BASE_URL = "http://192.168.30.102:8080/";
 
         private static final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 

@@ -14,7 +14,11 @@
         android:id="@+id/congViecFragment"
         android:name="com.example.appquanlycongviec.fragment.CongViecFragment"
         android:label="fragment_cong_viec"
-        tools:layout="@layout/fragment_cong_viec" />
+        tools:layout="@layout/fragment_cong_viec" >
+        <action
+            android:id="@+id/action_congViecFragment_to_hinhAnhCongViecFragment"
+            app:destination="@id/hinhAnhCongViecFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ghiChuFragment"
         android:name="com.example.appquanlycongviec.fragment.GhiChuFragment"
@@ -35,4 +39,9 @@
         android:name="com.example.appquanlycongviec.fragment.ThongKeFragment"
         android:label="fragment_thong_ke"
         tools:layout="@layout/fragment_thong_ke" />
+    <fragment
+        android:id="@+id/hinhAnhCongViecFragment"
+        android:name="com.example.appquanlycongviec.fragment.HinhAnhCongViecFragment"
+        android:label="fragment_hinh_anh_cong_viec"
+        tools:layout="@layout/fragment_hinh_anh_cong_viec" />
 </navigation>
