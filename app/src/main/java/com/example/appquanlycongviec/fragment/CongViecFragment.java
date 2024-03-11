@@ -117,7 +117,7 @@ public class CongViecFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 
                 if (position == 0) {
-                    taiDanhSachCongViecNgay(maNd,dinhDangNgayAPI(ngay,thang,nam));
+                   congViecNgayViewModel.sapXepCvNgay(0);
                 } else if (position == 1) {
 
                     congViecNgayViewModel.sapXepCvNgay(1);
