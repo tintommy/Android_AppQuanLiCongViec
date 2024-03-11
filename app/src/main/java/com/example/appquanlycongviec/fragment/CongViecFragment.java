@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ import com.example.appquanlycongviec.viewModel.CongViecNgayViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -48,10 +51,11 @@ public class CongViecFragment extends Fragment {
     private DanhSachCongViecNgayAdapter danhSachCongViecNgayAdapter;
 
     private FragmentCongViecBinding binding;
-    Calendar calendar = Calendar.getInstance();
-    int nam = calendar.get(Calendar.YEAR);
-    int thang = calendar.get(Calendar.MONTH); // Tháng bắt đầu từ 0
-    int ngay = calendar.get(Calendar.DAY_OF_MONTH);
+
+    private Calendar calendar = Calendar.getInstance();
+    private int nam = calendar.get(Calendar.YEAR);
+    private int thang = calendar.get(Calendar.MONTH); // Tháng bắt đầu từ 0
+    private int ngay = calendar.get(Calendar.DAY_OF_MONTH);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,7 @@ public class CongViecFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        khaiBaoSpinner();
         congViecNgayViewModel = new CongViecNgayViewModel();
         khaiBaoAdapter();
         binding.rvCongViec.setAdapter(danhSachCongViecNgayAdapter);
@@ -103,6 +107,39 @@ public class CongViecFragment extends Fragment {
         });
     }
 
+    private void khaiBaoSpinner() {
+        String[] luaChon = {"Mặc định", "Trạng thái tăng", "Trạng thái giảm", "Tính chất tăng", "Tính chất giảm"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, luaChon);
+        binding.spSapXep.setAdapter(adapter);
+
+        binding.spSapXep.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                if (position == 0) {
+                    taiDanhSachCongViecNgay(maNd,dinhDangNgayAPI(ngay,thang,nam));
+                } else if (position == 1) {
+
+                    congViecNgayViewModel.sapXepCvNgay(1);
+                } else if (position == 2) {
+
+                    congViecNgayViewModel.sapXepCvNgay(2);
+                } else if (position == 3) {
+
+                    congViecNgayViewModel.sapXepCvNgay(3);
+                } else if (position == 4) {
+
+                    congViecNgayViewModel.sapXepCvNgay(4);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     private void taiDanhSachCongViecNgay(int maNd, String ngay) {
         congViecNgayViewModel.taiDanhSachCongViecNgay(maNd, ngay);
         congViecNgayViewModel.danhSachCongViecNgay.observe(getViewLifecycleOwner(), new Observer<Resource<List<CongViecNgay>>>() {
@@ -111,15 +148,18 @@ public class CongViecFragment extends Fragment {
                 if (list instanceof Resource.Loading) {
                     binding.progressBar.setVisibility(View.VISIBLE);
                     binding.tvTrong.setVisibility(View.GONE);
+                    binding.spSapXep.setVisibility(View.GONE);
                 }
                 if (list instanceof Resource.Success) {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.tvTrong.setVisibility(View.GONE);
+                    binding.spSapXep.setVisibility(View.VISIBLE);
                     danhSachCongViecNgayAdapter.differ.submitList(list.getData());
 
                 }
                 if (list instanceof Resource.Error) {
                     binding.progressBar.setVisibility(View.GONE);
+                    binding.spSapXep.setVisibility(View.GONE);
                     if (list.getMessage().equals("error")) {
                         Toast.makeText(requireContext(), "Kiểm Tra Kết Nối Mạng", Toast.LENGTH_LONG).show();
                     }
@@ -197,7 +237,6 @@ public class CongViecFragment extends Fragment {
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-
 
 
             }

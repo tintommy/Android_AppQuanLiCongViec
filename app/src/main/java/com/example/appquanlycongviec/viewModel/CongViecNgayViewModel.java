@@ -14,7 +14,10 @@ import com.example.appquanlycongviec.api.apiService.CongViecNgayApiService;
 import com.example.appquanlycongviec.model.CongViecNgay;
 import com.example.appquanlycongviec.util.Resource;
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,12 +30,17 @@ import retrofit2.Response;
 
 public class CongViecNgayViewModel extends ViewModel {
     public MutableLiveData<Resource<List<CongViecNgay>>> danhSachCongViecNgay = new MutableLiveData<>(new Resource.Unspecified<>());
-    CongViecNgayApiService service = ApiInstance.getRetrofitInstance().create(CongViecNgayApiService.class);
+
+    private CongViecNgayApiService service = ApiInstance.getRetrofitInstance().create(CongViecNgayApiService.class);
     public MutableLiveData<String> soViecCanLam = new MutableLiveData<>("");
     public MutableLiveData<String> phanTramHoanThanh = new MutableLiveData<>("");
-
+    private List<CongViecNgay> congViecNgayList = new ArrayList<>();
+    private int maNd;
+    private String ngay;
 
     public void taiDanhSachCongViecNgay(int maNd, String ngay) {
+        this.maNd= maNd;
+        this.ngay= ngay;
         danhSachCongViecNgay.postValue(new Resource.Loading<>());
 
         Call<List<CongViecNgay>> call = service.layDanhSachCongViecNgay(maNd, ngay);
@@ -43,7 +51,9 @@ public class CongViecNgayViewModel extends ViewModel {
                     List<CongViecNgay> dsCv = response.body();
 
                     danhSachCongViecNgay.postValue(new Resource.Success<>(dsCv));
-                    capNhatSoViecVaPhanTram(dsCv,200);
+                    capNhatSoViecVaPhanTram(dsCv, 200);
+                    congViecNgayList.clear();
+                    congViecNgayList.addAll(dsCv);
                 } else {
                     if (response.code() == 404) {
                         danhSachCongViecNgay.postValue(new Resource.Error<>("404"));
@@ -122,7 +132,7 @@ public class CongViecNgayViewModel extends ViewModel {
 
     public void capNhatSoViecVaPhanTram(List<CongViecNgay> cvnList, int code) {
         int hoanThanh = 0, chuaHoanThanh = 0;
-        if (code==200) {
+        if (code == 200) {
             if (cvnList.size() > 0) {
                 for (int i = 0; i < cvnList.size(); i++) {
                     if (cvnList.get(i).getTrangThai() == true) {
@@ -130,13 +140,13 @@ public class CongViecNgayViewModel extends ViewModel {
                     } else chuaHoanThanh += 1;
                 }
                 if (hoanThanh == cvnList.size()) {
-                    phanTramHoanThanh.postValue("100%");
+                    phanTramHoanThanh.postValue("Hoàn thành: 100%");
                 } else if (chuaHoanThanh == cvnList.size()) {
-                    phanTramHoanThanh.postValue("0%");
+                    phanTramHoanThanh.postValue("Hoàn thành: 0%");
 
                 }
                 double phanTram = (double) hoanThanh / cvnList.size();
-                phanTramHoanThanh.postValue(new DecimalFormat("#.##").format(phanTram * 100) + "%");
+                phanTramHoanThanh.postValue("Hoàn thành: " + new DecimalFormat("#.##").format(phanTram * 100) + "%");
             }
             soViecCanLam.postValue("Bạn có " + (cvnList.size() - hoanThanh) + " việc cần làm");
         }
@@ -145,4 +155,59 @@ public class CongViecNgayViewModel extends ViewModel {
             soViecCanLam.postValue("");
         }
     }
+
+    public void sapXepCvNgay(int luaChon) {
+                List<CongViecNgay> congViecNgayListTemp=new ArrayList<>();
+                congViecNgayListTemp.addAll(congViecNgayList);
+                if (luaChon == 1) {
+                    Collections.sort(congViecNgayListTemp, new Comparator<CongViecNgay>() {
+                        @Override
+                        public int compare(CongViecNgay cv1, CongViecNgay cv2) {
+
+                            if (!cv1.getTrangThai() && cv2.getTrangThai()) {
+                                return -1;
+                            } else if (cv1.getTrangThai() && !cv2.getTrangThai()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    });
+                } else if (luaChon == 2) {
+                    Collections.sort(congViecNgayListTemp, new Comparator<CongViecNgay>() {
+                        @Override
+                        public int compare(CongViecNgay cv1, CongViecNgay cv2) {
+
+                            if (cv1.getTrangThai() && !cv2.getTrangThai()) {
+                                return -1;
+                            } else if (!cv1.getTrangThai() && cv2.getTrangThai()) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    });
+
+                } else if (luaChon == 3) {
+                    Collections.sort(congViecNgayListTemp, new Comparator<CongViecNgay>() {
+                        @Override
+                        public int compare(CongViecNgay cv1, CongViecNgay cv2) {
+                            return cv1.getCongViec().getTinhChat() - cv2.getCongViec().getTinhChat();
+                        }
+                    });
+
+                } else if (luaChon == 4) {
+                    Collections.sort(congViecNgayListTemp, new Comparator<CongViecNgay>() {
+                        @Override
+                        public int compare(CongViecNgay cv1, CongViecNgay cv2) {
+
+                            return cv2.getCongViec().getTinhChat() - cv1.getCongViec().getTinhChat();
+                        }
+                    });
+                }
+                danhSachCongViecNgay.postValue(new Resource.Success<>(congViecNgayListTemp));
+            }
+
+
+
 }

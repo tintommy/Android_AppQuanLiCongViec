@@ -71,7 +71,7 @@ public class HinhAnhViewModel extends ViewModel {
 
 
     public void luuDanhSachAnh(List<Uri> linkHinhAnh, Context context, CongViecNgay cvNgay) {
-
+        hinhAnhList.postValue(new Resource.Loading<>());
         Log.e("Ngay", cvNgay.getMaCvNgay().toString());
         List<String> anhURL = new ArrayList<>();
         int soAnh = linkHinhAnh.size();
