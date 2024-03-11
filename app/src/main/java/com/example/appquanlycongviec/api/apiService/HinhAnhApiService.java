@@ -15,8 +15,8 @@ import retrofit2.http.Path;
 public interface HinhAnhApiService {
     @GET("HinhAnh/LayHinhAnh/{maCvNgay}")
     Call<List<HinhAnh>> layDanhSachHinhAnh(@Path("maCvNgay") int maCvNgay);
-    @POST("HinhAnh/LuuHinhAnh")
-    Call <Void> luuDanhSachAnh(@Body List<HinhAnh> hinhAnhList);
+    @POST("HinhAnh/LuuHinhAnh/{maCvNgay}")
+    Call <Void> luuDanhSachAnh(@Path("maCvNgay") int maCvNgay,@Body List<String> hinhAnhList);
     @GET("/HinhAnh/XoaHinhAnh/{maHinhAnh}")
     Call <Void> XoaHinhAnh(@Path("maHinhAnh") int maHinhAnh);
 }

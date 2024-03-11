@@ -72,7 +72,7 @@ public class HinhAnhViewModel extends ViewModel {
 
     public void luuDanhSachAnh(List<Uri> linkHinhAnh, Context context, CongViecNgay cvNgay) {
 
-        Log.e("Ngay",cvNgay.getMaCvNgay().toString());
+        Log.e("Ngay", cvNgay.getMaCvNgay().toString());
         List<String> anhURL = new ArrayList<>();
         int soAnh = linkHinhAnh.size();
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -101,14 +101,8 @@ public class HinhAnhViewModel extends ViewModel {
                                 anhURL.add(imageUrl);
                                 Log.e("SIZE", String.valueOf(anhURL.size()));
                                 if (anhURL.size() == soAnh) {
-                                    List<HinhAnh> hinhAnhs = new ArrayList<>();
-                                    for (int i = 0; i < anhURL.size(); i++) {
 
-                                        hinhAnhs.add(new HinhAnh(i,anhURL.get(i), cvNgay));
-                                        Log.e("Ngay1", hinhAnhs.get(i).getCvNgay().getMaCvNgay().toString());
-                                    }
-
-                                    hinhAnhApiService.luuDanhSachAnh(hinhAnhs).enqueue(new Callback() {
+                                    hinhAnhApiService.luuDanhSachAnh(cvNgay.getMaCvNgay(), anhURL).enqueue(new Callback() {
                                         @Override
                                         public void onResponse(Call call, Response response) {
                                             taiDanhSachHinhAnh(cvNgay.getMaCvNgay());
@@ -137,15 +131,21 @@ public class HinhAnhViewModel extends ViewModel {
         }
 
 
-
-
-
     }
 
-    public void xoaAnh(int maHinhAnh) {
+    public void xoaAnh(int maHinhAnh, String linkHinhAnh) {
+
+
         hinhAnhApiService.XoaHinhAnh(maHinhAnh).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if (response.isSuccessful()) {
+
+                    StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(linkHinhAnh);
+
+                    imageRef.delete();
+                }
 
             }
 

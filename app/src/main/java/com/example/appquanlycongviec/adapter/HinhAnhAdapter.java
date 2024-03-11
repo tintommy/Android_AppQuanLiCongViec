@@ -25,7 +25,7 @@ public class HinhAnhAdapter extends RecyclerView.Adapter<HinhAnhAdapter.HinhAnhV
 
 
     public interface OnItemClickListener {
-        void onDeleteButtonClick(int maHinhAnh,int position);
+        void onDeleteButtonClick(HinhAnh hinhAnh,int position);
     }
     private OnItemClickListener itemClick;
 
@@ -49,7 +49,7 @@ public class HinhAnhAdapter extends RecyclerView.Adapter<HinhAnhAdapter.HinhAnhV
         holder.binding.btnXoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemClick.onDeleteButtonClick(hinhAnh.getMaHinh(),position);
+                itemClick.onDeleteButtonClick(hinhAnh,position);
 
             }
         });

@@ -119,7 +119,7 @@ public class HinhAnhCongViecFragment extends Fragment {
         hinhAnhAdapter = new HinhAnhAdapter(hinhAnhs);
         hinhAnhAdapter.setOnItemClickListener(new HinhAnhAdapter.OnItemClickListener() {
             @Override
-            public void onDeleteButtonClick(int maHinhAnh,int position) {
+            public void onDeleteButtonClick(HinhAnh hinhAnh,int position) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setMessage("Xoá ảnh này ?");
@@ -128,7 +128,7 @@ public class HinhAnhCongViecFragment extends Fragment {
                 builder.setPositiveButton("Xoá", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        hinhAnhViewModel.xoaAnh(maHinhAnh);
+                        hinhAnhViewModel.xoaAnh(hinhAnh.getMaHinh(),hinhAnh.getLink());
                         hinhAnhAdapter.xoaHinhAnhTrongDanhSach(position);
                         if(hinhAnhs.isEmpty())
                             binding.tvTrong.setVisibility(View.VISIBLE);
