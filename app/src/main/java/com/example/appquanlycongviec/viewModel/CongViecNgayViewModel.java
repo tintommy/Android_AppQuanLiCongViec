@@ -1,11 +1,5 @@
 package com.example.appquanlycongviec.viewModel;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,16 +8,12 @@ import com.example.appquanlycongviec.api.apiService.CongViecNgayApiService;
 import com.example.appquanlycongviec.model.CongViecNgay;
 import com.example.appquanlycongviec.util.Resource;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import kotlinx.coroutines.flow.MutableStateFlow;
-import kotlinx.coroutines.flow.StateFlow;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
